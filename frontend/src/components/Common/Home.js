@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import ls from "local-storage";
 
-var string = "MyString"
+// var string = "MyString"
 
 export default class Home extends Component {
     
@@ -31,7 +32,10 @@ export default class Home extends Component {
     render() {
         return (
             <div>
-                Happy Coding {this.state.name}!
+                <h3> 
+                Hello {ls.get("username")}. You are a {ls.get("userType")}
+                </h3>
+                {/* Happy Coding {this.state.name}! */}
            </div>
         )
     }

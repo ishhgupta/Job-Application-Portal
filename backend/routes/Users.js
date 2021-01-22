@@ -20,7 +20,7 @@ router.post("/register", function (req, res) {
 
   //Check Validation
   if (!isValid) {
-    return res.status(400).json({ errors });
+    return res.status(400).json( errors );
   }
 
   applicant.findOne({ email: req.body.email }).then((user) => {
@@ -37,20 +37,20 @@ router.post("/register", function (req, res) {
         .json({ email: "Email already Exists as Recruiter" });
     }
   });
-
-  if (req.body.userType == "recruiter") {
-    var newUser = new recruiter({
+  var newUser;
+  if (req.body.userType === "recruiter") {
+    newUser = new recruiter({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      userType: req.body.userType,
+      userType: req.body.userType
     });
   } else {
-    var newUser = new applicant({
+    newUser = new applicant({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      userType: req.body.userType,
+      userType: req.body.userType
     });
   }
 
@@ -65,7 +65,7 @@ router.post("/register", function (req, res) {
           res.status(200).json(user);
         })
         .catch((err) => {
-          res.status(400).console.log(err);
+          res.status(400).send(err);
         });
     });
   });
@@ -97,6 +97,8 @@ router.post("/login", (req, res) => {
           const payload = {
             id: user.id,
             name: user.name,
+            email: user.email,
+            userType: user.userType
           };
           // Sign token
           jwt.sign(
@@ -109,20 +111,21 @@ router.post("/login", (req, res) => {
               res.json({
                 success: true,
                 token: "Bearer " + token,
+                user : user
               });
             }
           );
         } else {
           return res
             .status(400)
-            .json({ passwordincorrect: "Password incorrect" });
+            .json({ error: "Password incorrect", passwordincorrect: "Password incorrect" });
         }
       });
     } else {
       recruiter.findOne({ email }).then((user) => {
         //checking if recruiter exists
         if (!user) {
-          return res.status(404).json({ emailnotfound: "Email not found" });
+          return res.status(404).json({ error: "Email not found" , emailnotfound: "Email not found" });
         }
         // Check password
         bcrypt.compare(password, user.password).then((isMatch) => {
@@ -132,6 +135,8 @@ router.post("/login", (req, res) => {
             const payload = {
               id: user.id,
               name: user.name,
+              email: user.email,
+              userType: user.userType
             };
             // Sign token
             jwt.sign(
@@ -144,13 +149,14 @@ router.post("/login", (req, res) => {
                 res.json({
                   success: true,
                   token: "Bearer " + token,
+                  user: user
                 });
               }
             );
           } else {
             return res
               .status(400)
-              .json({ passwordincorrect: "Password incorrect" });
+              .json({ error: "Password incorrect", passwordincorrect: "Password incorrect" });
           }
         });
       });
@@ -158,17 +164,17 @@ router.post("/login", (req, res) => {
   });
 });
 
-// // GET request
-// // Getting all the users
-// router.get("/", function (req, res) {
-//   applicant.find(function (err, users) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.json(users);
-//     }
-//   });
-// });
+// GET request
+// Getting all the users
+router.get("/", function (req, res) {
+  applicant.find(function (err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(users);
+    }
+  });
+});
 
 // NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
 
