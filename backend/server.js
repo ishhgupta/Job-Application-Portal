@@ -11,6 +11,7 @@ const DB_NAME = "jobApplication"
 // routes
 var testAPIRouter = require("./routes/testAPI");
 var UserRouter = require("./routes/Users");
+var RecruiterRouter = require("./routes/Recruiters");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -32,6 +33,7 @@ require("./config/passport")(passport);
 // setup API endpoints
 app.use("/testAPI", testAPIRouter);
 app.use("/users", UserRouter);
+app.use("/recruiters", RecruiterRouter);
 
 app.listen(PORT, function() {
     console.log("Server up and running on Port: " + PORT);

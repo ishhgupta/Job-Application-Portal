@@ -10,6 +10,8 @@ import Navbar from './components/templates/Navbar'
 import Profile from './components/Users/Profile'
 import Landing from './components/templates/landing';
 import Login from './components/Common/login';
+import createJob from './components/Jobs/createJob';
+
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           <Route exact path = "/" component = {Landing}/>
         )}
         {/* <Route path = "/" exact component = {Home} />  */}
+        <Route exact path = "/createJob" component={createJob}/>
         <Route path="/users" exact component={UsersList}/>
         <Route path="/register" component={Register}/>
         <Route path= "/login" component = {Login}/>
