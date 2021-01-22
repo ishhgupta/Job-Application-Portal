@@ -22,6 +22,12 @@ const recruiterSchema = new Schema({
 	userType:{
 		type: String,
 		required: true
+	},
+	contactNumber :{
+		type: Number,
+	},
+	bio:{
+		type: String
 	}
 });
 

@@ -20,6 +20,7 @@ class createJob extends Component {
       salary : "",
       selectedOption: "",
       datePosting : "",
+      remPos : "",
       errors: {}
     };
     this.jobType = [
@@ -54,6 +55,7 @@ class createJob extends Component {
       jobType: this.state.selectedOption.value,
       duration: this.state.duration,
       salary : this.state.salary,
+      remPos : this.state.maxPositions,
       datePosting: Date.now(),
     };
     console.log(newJob);
@@ -80,6 +82,7 @@ class createJob extends Component {
       salary : "",
       selectedOption: "",
       datePosting : null,
+      remPos : "",
       errors: {}
     });
   }

@@ -166,15 +166,15 @@ router.post("/login", (req, res) => {
 
 // GET request
 // Getting all the users
-router.get("/", function (req, res) {
-  applicant.find(function (err, users) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(users);
-    }
-  });
-});
+// router.get("/", function (req, res) {
+//   applicant.find(function (err, users) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.json(users);
+//     }
+//   });
+// });
 
 // NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
 

@@ -43,7 +43,19 @@ const jobSchema = new Schema({
     salary : {
         type: Number,
         required : true
+    },
+    numApplications : {
+        type : Number,
+        default : 0
+    },
+    remPos: {
+        type : Number,
+        required : true
     }
+    // status:{
+    //     type: "active",
+
+    // }
 });
 
 // jobSchema.plugin(mongoose_fuzzy_searching, { fields: ["title"] });

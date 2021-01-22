@@ -30,7 +30,8 @@ router.post("/createJob", function (req, res) {
       requiredSkills : req.body.requiredSkills,
       jobType : req.body.jobType,
       duration : req.body.duration,
-      salary : req.body.salary
+      salary : req.body.salary,
+      remPos : req.body.remPos
     });
 
     newJob.save()
@@ -39,6 +40,20 @@ router.post("/createJob", function (req, res) {
       res.status(400).send(err);
     });
   }
+});
+
+router.post("/viewJobs", function (req,res){
+  var email = req.body.mail;
+    job.find( {
+        "recruiterEmail" : email
+    },async function(err,user){
+        if(err){
+            console.log(err);
+        }
+        await res.json(user);
+        await console.log(user);
+
+    });
 });
 
 module.exports = router;

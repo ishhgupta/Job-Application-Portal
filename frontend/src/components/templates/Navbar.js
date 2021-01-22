@@ -30,7 +30,12 @@ export default class NavBar extends Component {
                             </li>  
                             {ls.get("userType") === "recruiter" ? (
                                 <li className="navbar-item">
-                                    <Link to="/createJob" className="nav-link">CreateJob</Link>
+                                    <Link to="/createJob" className="nav-link">Create Job</Link>
+                                </li>
+                            ) : null}
+                            {ls.get("userType") === "recruiter" ? (
+                                <li className="navbar-item">
+                                    <Link to="/viewJobs" className="nav-link">View Jobs</Link>
                                 </li>
                             ) : null}
                             <li className="navbar-item">
