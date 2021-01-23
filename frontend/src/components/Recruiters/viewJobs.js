@@ -7,8 +7,11 @@ class viewJobs extends Component {
 		super();
 		this.state = {
 			response: []
-		};
-	}
+        };
+		this.onDelete = this.onDelete.bind(this);
+		this.onClickEdit = this.onClickEdit.bind(this);
+    }
+    
 	// const response;
 	componentDidMount() {
 		const data = { mail: ls.get("email") };
@@ -23,24 +26,38 @@ class viewJobs extends Component {
 			});
 	}
 
-	// onSubmit = arg => e => {
-	// 	e.preventDefault();
-	// 	const orderdata = {
-	// 		name: document.getElementById(arg - 3).innerHTML,
-	// 		mail: ls.get("email")
-	// 	};
-	// 	console.log(orderdata);
-	// 	axios
-	// 		.post("/product/cancel", orderdata)
-	// 		.then(res => {
-	// 			console.log(res);
-	// 			alert("Order Cancelled Successfuly");
-	// 			window.location.reload();
-	// 		})
-	// 		.catch(function(res) {
-	// 			// alert(res.response.data[Object.keys(res.response.data)[0]]);
-	// 		});
-	// };
+	onDelete = arg => e => {
+		e.preventDefault();
+		const orderdata = {
+			title: document.getElementById(arg - 4).innerHTML,
+			mail: ls.get("email")
+		};
+		// console.log(orderdata);
+		axios
+			.post("http://localhost:4000/recruiters/delete", orderdata)
+			.then(res => {
+				console.log(res);
+				alert("Job Deleted Successfuly");
+				window.location.reload();
+			})
+			.catch(function(err) {
+                alert(err);
+				// alert(res.response.data[Object.keys(res.response.data)[0]]);
+			});
+	};
+
+	onClickEdit = arg => e => {
+		e.preventDefault();
+		// console.log("abc");
+		const orderdata = {
+			title: document.getElementById(arg - 5).innerHTML,
+		};
+		console.log(orderdata);
+		ls.set("title",orderdata.title);
+		window.location = ("/viewJobs/editJob");
+		
+	};
+
 
 	createTable() {
 		let table = [];
@@ -78,19 +95,34 @@ class viewJobs extends Component {
 				<td id={i} key={i++}>
 					{remPos}
 				</td>
+            );
+            
+			children.push(
+				<td id={i} key={i++}>
+					<form onClick={this.onDelete(i - 1)}>
+						<button
+							className="btn btn-outline-success my-2 my-sm-0"
+							type="submit"
+						>
+							Delete
+						</button>
+					</form>
+				</td>
 			);
-			// children.push(
-			// 	<td id={i} key={i++}>
-			// 		<form onSubmit={this.onSubmit(i - 1)}>
-			// 			<button
-			// 				className="btn btn-outline-success my-2 my-sm-0"
-			// 				type="submit"
-			// 			>
-			// 				Delete
-			// 			</button>
-			// 		</form>
-			// 	</td>
-			// );
+			
+			children.push(
+				<td id={i} key={i++}>
+					<form onClick={this.onClickEdit(i - 1)}>
+						<button
+							className="btn btn-outline-success my-2 my-sm-0"
+							type="submit"
+						>
+							Edit
+						</button>
+					</form>
+				</td>
+            );
+            
 			table.push(<tr key={i++}>{children}</tr>);
 			i++;
 		}

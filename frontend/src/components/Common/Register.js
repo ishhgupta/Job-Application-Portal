@@ -69,16 +69,16 @@ class Register extends Component {
         alert(res.response.data[Object.keys(res.response.data)[0]]);
       });
 
-    this.setState({
-      name: "",
-      email: "",
-      date: null,
-      password: "",
-      password2: "",
-      userType: "",
-      selectedOption: "",
-      errors: {}
-    });
+    // this.setState({
+    //   name: "",
+    //   email: "",
+    //   date: null,
+    //   password: "",
+    //   password2: "",
+    //   userType: "",
+    //   selectedOption: "",
+    //   errors: {}
+    // });
   }
 
   render() {

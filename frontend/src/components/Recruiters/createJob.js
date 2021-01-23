@@ -58,7 +58,7 @@ class createJob extends Component {
       remPos : this.state.maxPositions,
       datePosting: Date.now(),
     };
-    console.log(newJob);
+    // console.log(newJob);
     axios
       .post("http://localhost:4000/recruiters/createJob", newJob)
       .then((res) => {
@@ -70,21 +70,21 @@ class createJob extends Component {
         alert(res.response.data[Object.keys(res.response.data)[0]]);
       });
 
-    this.setState({
-      title : "",
-      recruiterName : "",
-      recruiterEmail : "",
-      maxApplications : "",
-      maxPositions : "",
-      requiredSkills : "",
-      jobType : "",
-      duration : "",
-      salary : "",
-      selectedOption: "",
-      datePosting : null,
-      remPos : "",
-      errors: {}
-    });
+    // this.setState({
+    //   title : "",
+    //   recruiterName : "",
+    //   recruiterEmail : "",
+    //   maxApplications : "",
+    //   maxPositions : "",
+    //   requiredSkills : "",
+    //   jobType : "",
+    //   duration : "",
+    //   salary : "",
+    //   selectedOption: "",
+    //   datePosting : null,
+    //   remPos : "",
+    //   errors: {}
+    // });
   }
 
   render() {
@@ -105,7 +105,7 @@ class createJob extends Component {
             />
           </div>
           <div className="form-group">
-            <label>Maximum Applications: </label>
+            <label>Maximum Number of Applications Allowed: </label>
             <input
               type="text"
               className="form-control"
@@ -171,7 +171,7 @@ class createJob extends Component {
             />
           </div>
           <div className="form-group">
-            <input type="submit" value="Creat Job" className="btn btn-primary" />
+            <input type="submit" value="Create Job" className="btn btn-primary" />
           </div>
         </form>
       </div>

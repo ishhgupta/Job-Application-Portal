@@ -12,6 +12,7 @@ import Landing from './components/templates/landing';
 import Login from './components/Common/login';
 import createJob from './components/Recruiters/createJob';
 import viewJobs from './components/Recruiters/viewJobs';
+import editJob from './components/Recruiters/editJob';
 
 
 function App() {
@@ -30,10 +31,12 @@ function App() {
         {/* <Route path = "/" exact component = {Home} />  */}
         <Route exact path = "/createJob" component={createJob}/>
         <Route exact path = "/viewJobs" component={viewJobs}/>
+        <Route exact path = "/viewJobs/editJob" component={editJob}/>
         <Route path="/users" exact component={UsersList}/>
         <Route path="/register" component={Register}/>
         <Route path= "/login" component = {Login}/>
         <Route path="/profile" component={Profile}/>
+  
       </div>
     </Router>
   );
