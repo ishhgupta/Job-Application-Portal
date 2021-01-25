@@ -13,6 +13,7 @@ import Login from './components/Common/login';
 import createJob from './components/Recruiters/createJob';
 import viewJobs from './components/Recruiters/viewJobs';
 import editJob from './components/Recruiters/editJob';
+import viewAllJobs from './components/Applicants/viewAllJobs';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route exact path = "/createJob" component={createJob}/>
         <Route exact path = "/viewJobs" component={viewJobs}/>
         <Route exact path = "/viewJobs/editJob" component={editJob}/>
+        <Route exact path = "/viewAllJobs" component={viewAllJobs}/>
         <Route path="/users" exact component={UsersList}/>
         <Route path="/register" component={Register}/>
         <Route path= "/login" component = {Login}/>

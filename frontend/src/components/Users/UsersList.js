@@ -42,9 +42,6 @@ class UsersList extends Component {
     }
 
     sortChange(){
-/**
- *      Note that this is sorting only at front-end.
- */
         var array = this.state.users;
         var flag = this.state.sortName;
         array.sort(function(a, b) {
@@ -84,7 +81,7 @@ class UsersList extends Component {
     render() {
         return (
             <div>
-                <Grid container>
+                {/* <Grid container>
                 <Grid item xs={12} md={3} lg={3}>
                     <List component="nav" aria-label="mailbox folders">
                         <ListItem text>
@@ -110,14 +107,16 @@ class UsersList extends Component {
                         />
                     </List>
                     </Grid>
-                </Grid>
+                </Grid> */}
                 <Grid container>
                     <Grid item xs={12} md={3} lg={3}>
                         <List component="nav" aria-label="mailbox folders">
-
+                            <ListItem text>
+                                           <h3>Filters</h3>
+                            </ListItem>
                             <ListItem button>
                                 <form noValidate autoComplete="off">
-                                    <label>Salary</label>
+                                    <label><h5>Salary</h5></label>
                                     <TextField id="standard-basic" label="Enter Min" fullWidth={true} />
                                     <TextField id="standard-basic" label="Enter Max" fullWidth={true}/>
                                 </form>                                                                
@@ -135,6 +134,22 @@ class UsersList extends Component {
                         </List>
                     </Grid>
                     <Grid item xs={12} md={9} lg={9}>
+                    <List component="nav" aria-label="mailbox folders">
+                        <TextField 
+                        id="standard-basic" 
+                        label="Search" 
+                        fullWidth={true}   
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment>
+                                    <IconButton>
+                                        <SearchIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            )}}
+                        // onChange={customFunction}
+                        />
+                    </List>
                         <Paper>
                             <Table size="small">
                                 <TableHead>

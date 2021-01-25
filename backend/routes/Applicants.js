@@ -9,49 +9,19 @@ const job = require("../models/jobs");
 const validateJobInput = require("../validation/jobs");
 // const validateLoginInput = require("../validation/login");
 
-// @route POST /recruiters/createJob
-// @desc Create Job
+// @route GET /applicants/viewJobs
+// @desc View All Jobs
 // @access Public
-router.post("/createJob", function (req, res) {
- 
-  //Form Validation
-  const { errors, isValid } = validateJobInput(req.body);
-
-  //Check Validation
-  if (!isValid) {
-    return res.status(400).json( errors );
-  } else{
-    const newJob = new job({
-      title : req.body.title,
-      recruiterName : req.body.recruiterName,
-      recruiterEmail : req.body.recruiterEmail,
-      maxApplications : req.body.maxApplications,
-      maxPositions : req.body.maxPositions,
-      requiredSkills : req.body.requiredSkills,
-      jobType : req.body.jobType,
-      duration : req.body.duration,
-      salary : req.body.salary,
-      remPos : req.body.remPos
-    });
-
-    newJob.save()
-    .then((newJob) =>  res.status(200).send(newJob))
-    .catch((err) => {
-      res.status(400).send(err);
-    });
-  }
-});
-
-router.post("/viewJobs", function (req,res){
-  var email = req.body.mail;
-    job.find( {
-        "recruiterEmail" : email
-    },async function(err,user){
+router.get("/viewAllJobs", function (req,res){
+    job.find(async function(err,jobs){
         if(err){
             console.log(err);
         }
+        else{
+            await res.json(jobs);
+        }
         // await console.log(user);
-        await res.json(user);
+        // await res.json(user);
     });
 });
 
@@ -80,7 +50,7 @@ router.post("/viewOneJob", function (req,res){
         if(err){
             console.log(err);
         }
-        // await console.log(user);
+        await console.log(user);
         await res.json(user);
     });
 });
