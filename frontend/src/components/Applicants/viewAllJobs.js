@@ -44,18 +44,48 @@ class viewAllJobs extends Component{
     }
 
      async componentDidMount() {
-        axios.get('http://localhost:4000/applicants/viewAllJobs')
+        await axios.get('http://localhost:4000/applicants/viewAllJobs')
              .then(response => {
-                 console.log(response);
+                //  console.log(response);
                  this.setState({jobs: response.data});
-                 console.log(this.state.jobs);
+                //  console.log(this.state.jobs);
              })
              .catch(function(error) {
                  console.log(error);
                 //  console.log("errorrrr");
              });;
         
-        
+        var status = [];
+        //querying in applications if the given application is present
+        for(var i =0; i< await this.state.jobs.length; i++){
+            const query = {
+                applicantEmail : ls.get("email"),
+                jobId :  await this.state.jobs[i]._id,
+            };
+            await axios
+                .post("http://localhost:4000/applicants/query",query)
+                .then ( async res => {
+                    await console.log(res.data);
+                    await this.state.jobs[i].numApplications === await  this.state.jobs[i].maxApplications ||  await this.state.jobs[i].remPos === 0 
+                    ?
+                        (await status.push("Full"))
+                    :  
+                        (await res.data.length === 0 ? (await status.push ("Apply")) : (await status.push("Applied")))
+                    
+                })
+                .catch (function (err) {
+                    console.log(err);
+                });
+        }
+        // await console.log(status);
+        var temp = [];
+        temp = this.state.jobs;
+        for(var i=0;i< await this.state.jobs.length; i++){
+            temp[i].applicantStatus = status[i];
+            console.log(temp[i].applicantStatus);    
+        }
+
+        this.setState({jobs : temp})
     }
     // componentWillReceiveProps(nextProps) {
     //     this.setState({
@@ -67,7 +97,7 @@ class viewAllJobs extends Component{
         var array = this.state.jobs;
         var flag = this.state.sortNameSalary;
         array.sort(function(a, b) {
-            if(a.salary != undefined && b.salary != undefined){
+            if(a.salary !== undefined && b.salary !== undefined){
                 return (1 - flag*2) * ((a.salary) - (b.salary));
             }
             else{
@@ -88,7 +118,7 @@ class viewAllJobs extends Component{
         var array = this.state.jobs;
         var flag = this.state.sortNameRating;
         array.sort(function(a, b) {
-            if(a.salary != undefined && b.salary != undefined){
+            if(a.salary !== undefined && b.salary !== undefined){
                 return (1 - flag*2) * ((a.salary) - (b.salary));
             }
             else{
@@ -109,7 +139,7 @@ class viewAllJobs extends Component{
         var array = this.state.jobs;
         var flag = this.state.sortNameDuration;
         array.sort(function(a, b) {
-            if(a.duration != undefined && b.duration != undefined){
+            if(a.duration !== undefined && b.duration !== undefined){
                 return (1 - flag*2) * ((a.duration) - (b.duration));
             }
             else{
@@ -144,7 +174,7 @@ class viewAllJobs extends Component{
             .then((res) => {
                 alert("Applied on Job " + title);
                 console.log(res.data);
-                // window.location.reload();
+                window.location.reload();
             })
             .catch((res) => {
                 alert(res.response.data[Object.keys(res.response.data)[0]]);
@@ -236,15 +266,20 @@ class viewAllJobs extends Component{
                                             <TableCell>{job.salary}</TableCell>
                                             <TableCell>{job.duration}</TableCell>
                                             <TableCell>{job.deadline}</TableCell> 
-                                            <TableCell>{
-                                                <Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} >Apply</Button> 
-                                                /* job.numApplications === job.maxApplications ? (<Button className="btn btn-primary">Full</Button>) 
-                                                : ( job.applicantStatus === '' ? 
+                                            <TableCell>
+                                                {/* <Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} 
+                                                    variant="contained" 
+                                                    color = "primary">Apply</Button>
+                                             */}
+                                             {
+                                                 job.applicantStatus === "Full" ? (<Button className="btn btn-primary">Full</Button>) 
+                                                : ( job.applicantStatus === "Apply" ? 
                                                 (<Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} 
                                                     variant="contained" 
                                                     color = "primary">Apply</Button>) 
-                                                    : (<Button variant="contained" color = "secondary">Applied</Button>))  */
-                                            }</TableCell>
+                                                    : (<Button variant="contained" color = "secondary">Applied</Button>))  
+                                             }
+                                            </TableCell>
                                         </TableRow>
                                 ))
                                 }

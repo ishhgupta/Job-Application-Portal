@@ -33,10 +33,12 @@ export default class Home extends Component {
         return (
             <div>
                 <h3> 
-                Hello {ls.get("username")}. You are a {ls.get("userType")}
+                Hello . You are a {ls.get("userType")}
                 </h3>
                 {/* Happy Coding {this.state.name}! */}
+                {/* {ls.get("username")} */}
            </div>
+
         )
     }
 }

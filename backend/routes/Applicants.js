@@ -37,6 +37,7 @@ router.post("/apply",function(req,res){
         else if(user.isWorking === "true"){
           return res.status(400).json({warning : "You already got an job"});
         }
+        //creating new application
         const newApplication = new application({
           recruiterEmail : req.body.recruiterEmail,
           applicantEmail : req.body.applicantEmail,
@@ -58,21 +59,37 @@ router.post("/apply",function(req,res){
           },{
             new : true
           });
-          console.log(openApp);
-          console.log(ans);
+          
        });
 
        // updating number of applications for a particular job
-       job.findOne({"_id" : req.body.jobId},async function (err,users) {
-         var numApplications = await numApplications +1;
-         const arr = job.findOneAndUpdate({
-           "_id" : req.body.jobId
+       job.findOne({"_id" : req.body.jobId},async function (err,user) {
+        // console.log(user); 
+        var numApp = await user.numApplications +1;
+        //  console.log(numApp);
+         const arr = await job.findOneAndUpdate({
+          //  "_id" : req.body.jobId
+           "_id" : user._id
          }, {
-           "numApplications" : numApplications
+           "numApplications" : numApp
          },{new : true});
+        
        })
+       
+});
 
-
-
+router.post("/query", function (req,res){
+    application.find( {
+        "applicantEmail" : req.body.applicantEmail,
+        "jobId" : req.body.jobId
+    },async function(err,user){
+        if(err){
+            console.log(err);
+            res.json(err);
+        }
+        // console.log("heyya");
+        await console.log(user);
+        await res.json(user);
+    });
 });
 module.exports = router;

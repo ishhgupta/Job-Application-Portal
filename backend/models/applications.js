@@ -11,6 +11,18 @@ const applicationSchema = new Schema({
     //     type : ObjectId,
     //     required : true
     // },
+    // recruiterName : {
+    //     type : String,
+    //     required : true
+    // },
+    // jobTitle : {
+    //     type: String,
+    //     required : true
+    // },
+    // salary : {
+    //     type : Number,
+    //     required : true
+    // },
     applicantEmail : {
         type : String,
         required : true
