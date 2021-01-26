@@ -48,6 +48,14 @@ const applicantSchema = new Schema({
 	rating : {
 		type: Number,
 		range: [0,5]
+	},
+	allowedApp : {
+		type : Number,
+		default : 0
+	},
+	isWorking : {
+		type : Boolean,
+		default : false
 	}
 });
 

@@ -4,73 +4,75 @@ const router = express.Router();
 
 // Load applicant model
 const job = require("../models/jobs");
-
+const application = require("../models/applications");
+const applicant = require("../models/applicants");
 //Load Input validation
-const validateJobInput = require("../validation/jobs");
-// const validateLoginInput = require("../validation/login");
+const validateApplyInput = require("../validation/apply");
 
 // @route GET /applicants/viewJobs
 // @desc View All Jobs
 // @access Public
 router.get("/viewAllJobs", function (req,res){
-    job.find(async function(err,jobs){
-        if(err){
-            console.log(err);
+  job.find({
+    deadline: {"$gte" : Date.now()} })
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {res.status(400).send(err);});
+  })
+
+router.post("/apply",function(req,res){
+   
+  //Form Validation
+  const { errors, isValid } = validateApplyInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    return res.status(400).json( errors );
+  } 
+     applicant.findOne({ "email" : req.body.applicantEmail},async function(err,user){
+       if(user.allowedApp >= 10){
+         return res.status(400).json({warning : "You can not apply to more than 10 jobs"});
+       }
+        else if(user.isWorking === "true"){
+          return res.status(400).json({warning : "You already got an job"});
         }
-        else{
-            await res.json(jobs);
-        }
-        // await console.log(user);
-        // await res.json(user);
-    });
+        const newApplication = new application({
+          recruiterEmail : req.body.recruiterEmail,
+          applicantEmail : req.body.applicantEmail,
+          jobId : req.body.jobId,
+          sop : req.body.sop
+        });
+    
+        newApplication.save()
+        .then((newApplication) =>  res.status(200).send(newApplication))
+        .catch((err) => {
+          res.status(400).send(err);
+        });
+
+        //updating allowed Applications for applicant
+        var openApp = await user.allowedApp+1;
+        const ans = await applicant.findOneAndUpdate({
+          "_id" : user._id},{
+          "allowedApp" : openApp
+          },{
+            new : true
+          });
+          console.log(openApp);
+          console.log(ans);
+       });
+
+       // updating number of applications for a particular job
+       job.findOne({"_id" : req.body.jobId},async function (err,users) {
+         var numApplications = await numApplications +1;
+         const arr = job.findOneAndUpdate({
+           "_id" : req.body.jobId
+         }, {
+           "numApplications" : numApplications
+         },{new : true});
+       })
+
+
+
 });
-
-router.post("/delete",async function(req,res){
-  var title = req.body.title;
-  var email = req.body.mail;
-  // console.log(title);
-  // console.log(email);
-  const ans = await job.findOneAndDelete({
-      "recruiterEmail" : email,
-      "title" : title
-  });
-  res.json({message:"Successfully deleted"});
-  
-});
-
-router.post("/viewOneJob", function (req,res){
-  var email = req.body.mail;
-  var title = req.body.title;
-  // console.log(email);
-  // console.log(title);
-    job.findOne({
-        "recruiterEmail" : email,
-        "title" : title
-    },async function(err,user){
-        if(err){
-            console.log(err);
-        }
-        await console.log(user);
-        await res.json(user);
-    });
-});
-
-router.post("/updateJob", async function (req,res){
-  var email = req.body.mail;
-  var title = req.body.title;
-  var maxApplications = req.body.maxApplications;
-  var maxPositions = req.body.maxPositions
-  const arr = await job.findOneAndUpdate({
-    "recruiterEmail" : email,
-    "title" : title
-  },{
-    "maxApplications" : maxApplications,
-    "maxPositions" : maxPositions,
-    "remPos" : maxPositions
-  },{ new: true});
-  res.json({message:"Successfully Updated"});
-  // res.json(arr);  
-});
-
-
 module.exports = router;

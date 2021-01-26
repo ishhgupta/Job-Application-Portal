@@ -27,7 +27,11 @@ const jobSchema = new Schema({
 	datePosting:{
 		type: Date,
 		default: Date.now 
-	},
+    },
+    deadline :{
+        type: Date,
+        required : true
+    },
 	requiredSkills:{
 		type: String,
 		required: true
@@ -51,6 +55,10 @@ const jobSchema = new Schema({
     remPos: {
         type : Number,
         required : true
+    },
+    applicantStatus : {
+        type : String,
+        default : ''
     }
     // status:{
     //     type: "active",

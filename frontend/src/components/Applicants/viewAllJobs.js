@@ -25,29 +25,43 @@ class viewAllJobs extends Component{
     constructor(props){
         super(props);
         this.state = {
-			jobs: [], sortNameSalary: true,  sortNameRating: true,  sortNameDuration: true, filtered:[]
+            jobs: [], 
+            sop : '',
+            // filteredJobs : [],
+            sortNameSalary: true,  
+            sortNameRating: true,  
+            sortNameDuration: true, 
+            searchText: ''
         };
         this.sortSalary = this.sortSalary.bind(this);
+        this.renderIconSalary = this.renderIconSalary.bind(this);
         this.sortDuration = this.sortDuration.bind(this);
+        this.renderIconDuration = this.renderIconDuration.bind(this);
         this.sortRating = this.sortRating.bind(this);
+        this.renderIconRating =this.renderIconRating.bind(this);
+        this.updateSearch = this.updateSearch.bind(this);
+        this.onClickApply = this.onClickApply.bind(this);
     }
 
-    componentDidMount() {
+     async componentDidMount() {
         axios.get('http://localhost:4000/applicants/viewAllJobs')
              .then(response => {
                  console.log(response);
                  this.setState({jobs: response.data});
+                 console.log(this.state.jobs);
              })
              .catch(function(error) {
                  console.log(error);
                 //  console.log("errorrrr");
-             })
+             });;
+        
+        
     }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-          filtered: nextProps.jobs
-        });
-      }
+    // componentWillReceiveProps(nextProps) {
+    //     this.setState({
+    //       filtered: nextProps.jobs
+    //     });
+    //   }
 
     sortSalary(){
         var array = this.state.jobs;
@@ -111,17 +125,46 @@ class viewAllJobs extends Component{
         if(this.state.sortNameDuration){ return( <ArrowDownwardIcon/>) }
         else{ return( <ArrowUpwardIcon/> ) }
     }
+    updateSearch(event){
+        this.setState({ searchText: event.target.value.substr(0,20)});
+    }
 
+    onClickApply = (id,email,title) => e =>{
+        
+        this.state.sop = prompt("Enter your SOP(max - 250 words)");
+
+        const newApplication = {
+            recruiterEmail : email,
+            applicantEmail : ls.get("email"),
+            jobId : id,
+            sop : this.state.sop
+        };
+
+        axios.post('http://localhost:4000/applicants/apply',newApplication)
+            .then((res) => {
+                alert("Applied on Job " + title);
+                console.log(res.data);
+                // window.location.reload();
+            })
+            .catch((res) => {
+                alert(res.response.data[Object.keys(res.response.data)[0]]);
+            });
+        }
     
-
-    // customFunction(e){
-    //     console.log(e.target.value);
-    //     this.setState({
-    //         searchText:e.target.value
-    //     })
-    // }
-
     render() {
+        //search function
+        let filteredJobs = this.state.jobs.filter(
+            (job) => {
+                return job.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1;
+            }
+
+        );
+
+        // this.state.filteredJobs = this.state.filteredJobs.filter(
+        //     (job) => {
+        //         return job.jobType.indexOf('Part-time') !== -1;
+        //     }
+        // )
         return (
             <div>
                 <Grid container>
@@ -142,7 +185,7 @@ class viewAllJobs extends Component{
                                 <Autocomplete
                                     id="combo-box-demo"
                                     options={this.state.jobs}
-                                    getOptionLabel={1,2,3,4,5,6,7}
+                                    getOptionLabel={(option) => option.title}
                                     style={{ width: 300 }}
                                     renderInput={(params) => <TextField {...params} label="Select Names" variant="outlined" />}
                                 />
@@ -163,7 +206,8 @@ class viewAllJobs extends Component{
                                     </IconButton>
                                 </InputAdornment>
                             )}}
-                        // onChange={customFunction}
+                        value = {this.state.searchText}
+                        onChange={this.updateSearch}
                         />
                     </List>
                         <Paper>
@@ -183,7 +227,7 @@ class viewAllJobs extends Component{
                                 </TableHead>
                                 <TableBody>
                                 {
-                                this.state.jobs.map((job,ind) => (
+                                filteredJobs.map((job,ind) => (
                                         <TableRow key={ind}>
                                             {/* <TableCell>{ind+1}</TableCell> */}
                                             <TableCell>{job.title}</TableCell>
@@ -191,8 +235,16 @@ class viewAllJobs extends Component{
                                             <TableCell>{"abc"}</TableCell>
                                             <TableCell>{job.salary}</TableCell>
                                             <TableCell>{job.duration}</TableCell>
-                                            <TableCell>{"cde"}</TableCell> 
-                                            <TableCell>{"fgh"}</TableCell>
+                                            <TableCell>{job.deadline}</TableCell> 
+                                            <TableCell>{
+                                                <Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} >Apply</Button> 
+                                                /* job.numApplications === job.maxApplications ? (<Button className="btn btn-primary">Full</Button>) 
+                                                : ( job.applicantStatus === '' ? 
+                                                (<Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} 
+                                                    variant="contained" 
+                                                    color = "primary">Apply</Button>) 
+                                                    : (<Button variant="contained" color = "secondary">Applied</Button>))  */
+                                            }</TableCell>
                                         </TableRow>
                                 ))
                                 }

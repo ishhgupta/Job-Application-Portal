@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import ls from "local-storage";
+import { TextField } from "@material-ui/core";
 
 class editJob extends Component {
   constructor() {
@@ -8,6 +9,7 @@ class editJob extends Component {
     this.state = {
       maxApplications: "",
       maxPositions: "",
+      deadline: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -23,6 +25,9 @@ class editJob extends Component {
       .then((res) => {
         this.setState({ maxApplications: res.data.maxApplications });
         this.setState({ maxPositions: res.data.maxPositions });
+        this.setState({ deadline: res.data.deadline})
+        // console.log(res.data);
+        // console.log(this.state.deadline);
       })
       .catch(function (err) {
         alert(err);
@@ -40,6 +45,7 @@ class editJob extends Component {
       mail: ls.get("email"),
       maxApplications: this.state.maxApplications,
       maxPositions: this.state.maxPositions,
+      deadline : this.state.deadline
     };
     // console.log(orderdata);
     axios
@@ -84,6 +90,26 @@ class editJob extends Component {
               id="maxPositions"
             />
           </div>
+
+          <div>
+          <label>Deadline</label>
+          <br></br>
+          <input
+              type="datetime"
+              className="form-control"
+              value={this.state.deadline}
+              // onChange={this.handleChange}
+              //   error = {errors.maxPositions}
+              // id="maxPositions"
+            />
+            <TextField
+              type="datetime-local"
+              id="deadline"
+              value={this.state.deadline}
+              onChange={this.handleChange}
+            />
+          </div>
+          <br></br>
 
           <div className="form-group">
             <input type="submit" value="Update" className="btn btn-primary" />

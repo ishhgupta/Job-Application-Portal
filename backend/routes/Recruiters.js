@@ -27,6 +27,7 @@ router.post("/createJob", function (req, res) {
       recruiterEmail : req.body.recruiterEmail,
       maxApplications : req.body.maxApplications,
       maxPositions : req.body.maxPositions,
+      deadline : req.body.deadline,
       requiredSkills : req.body.requiredSkills,
       jobType : req.body.jobType,
       duration : req.body.duration,
@@ -89,11 +90,13 @@ router.post("/updateJob", async function (req,res){
   var email = req.body.mail;
   var title = req.body.title;
   var maxApplications = req.body.maxApplications;
-  var maxPositions = req.body.maxPositions
+  var maxPositions = req.body.maxPositions;
+  var deadline = req.body.deadline
   const arr = await job.findOneAndUpdate({
     "recruiterEmail" : email,
     "title" : title
   },{
+    "deadline" : deadline,
     "maxApplications" : maxApplications,
     "maxPositions" : maxPositions,
     "remPos" : maxPositions

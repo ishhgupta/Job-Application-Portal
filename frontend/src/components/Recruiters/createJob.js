@@ -3,25 +3,27 @@ import Select from "react-select";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ls from "local-storage";
+import { TextField } from "@material-ui/core";
 
 class createJob extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      title : "",
-      recruiterName : "",
-      recruiterEmail : "",
-      maxApplications : "",
-      maxPositions : "",
-      requiredSkills : "",
-      jobType : "",
-      duration : "",
-      salary : "",
+      title: "",
+      recruiterName: "",
+      recruiterEmail: "",
+      maxApplications: "",
+      maxPositions: "",
+      deadline: "",
+      requiredSkills: "",
+      jobType: "",
+      duration: "",
+      salary: "",
       selectedOption: "",
-      datePosting : "",
-      remPos : "",
-      errors: {}
+      datePosting: "",
+      remPos: "",
+      errors: {},
     };
     this.jobType = [
       { label: "Full-time", value: "Full-time" },
@@ -35,13 +37,13 @@ class createJob extends Component {
   }
 
   onChange(event) {
-      this.setState({ [event.target.id]: event.target.value});
+    this.setState({ [event.target.id]: event.target.value });
   }
 
   handleChange(selectedOption) {
     this.setState({ selectedOption });
     console.log(`Option selected:`, selectedOption);
-};
+  }
   onSubmit(e) {
     e.preventDefault();
 
@@ -49,13 +51,14 @@ class createJob extends Component {
       title: this.state.title,
       recruiterName: ls.get("username"),
       recruiterEmail: ls.get("email"),
-      maxApplications : this.state.maxApplications,
-      maxPositions : this.state.maxPositions,
+      maxApplications: this.state.maxApplications,
+      maxPositions: this.state.maxPositions,
+      deadline: this.state.deadline,
       requiredSkills: this.state.requiredSkills,
       jobType: this.state.selectedOption.value,
       duration: this.state.duration,
-      salary : this.state.salary,
-      remPos : this.state.maxPositions,
+      salary: this.state.salary,
+      remPos: this.state.maxPositions,
       datePosting: Date.now(),
     };
     // console.log(newJob);
@@ -91,7 +94,7 @@ class createJob extends Component {
     const { errors } = this.state;
     const { selectedOption } = this.state;
     return (
-      <div className = "container">
+      <div className="container">
         <form noValidate onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Job Title: </label>
@@ -100,8 +103,8 @@ class createJob extends Component {
               className="form-control"
               value={this.state.title}
               onChange={this.onChange}
-              id = "title"
-              error = {errors.title}
+              id="title"
+              error={errors.title}
             />
           </div>
           <div className="form-group">
@@ -111,8 +114,8 @@ class createJob extends Component {
               className="form-control"
               value={this.state.maxApplications}
               onChange={this.onChange}
-              error = {errors.maxApplications}
-              id = "maxApplications"
+              error={errors.maxApplications}
+              id="maxApplications"
             />
           </div>
           <div className="form-group">
@@ -122,10 +125,21 @@ class createJob extends Component {
               className="form-control"
               value={this.state.maxPositions}
               onChange={this.onChange}
-              error = {errors.maxPositions}
-              id = "maxPositions"
+              error={errors.maxPositions}
+              id="maxPositions"
             />
           </div>
+          <div>
+          <label>Deadline</label>
+          <br></br>
+            <TextField
+              type="datetime-local"
+              id="deadline"
+              value={this.state.deadline}
+              onChange={this.onChange}
+            />
+          </div>
+          <br></br>
           <div className="form-group">
             <label>Required Skills: </label>
             <input
@@ -133,8 +147,8 @@ class createJob extends Component {
               className="form-control"
               value={this.state.requiredSkills}
               onChange={this.onChange}
-              error = {errors.requiredSkills}
-              id = "requiredSkills"
+              error={errors.requiredSkills}
+              id="requiredSkills"
             />
           </div>
           <div className="form-group">
@@ -144,8 +158,8 @@ class createJob extends Component {
               className="form-control"
               value={this.state.duration}
               onChange={this.onChange}
-              error = {errors.duration}
-              id = "duration"
+              error={errors.duration}
+              id="duration"
             />
           </div>
           <div className="form-group">
@@ -155,23 +169,27 @@ class createJob extends Component {
               className="form-control"
               value={this.state.salary}
               onChange={this.onChange}
-              error = {errors.salary}
-              id = "salary"
+              error={errors.salary}
+              id="salary"
             />
           </div>
           <div className="form-group">
             {/* <label>Confirm password: </label> */}
             <Select
-              placeholder = "JobType"
-              id = "jobType"
+              placeholder="JobType"
+              id="jobType"
               // className="form-control"
               value={selectedOption}
               onChange={this.handleChange}
-              options = {this.jobType}
+              options={this.jobType}
             />
           </div>
           <div className="form-group">
-            <input type="submit" value="Create Job" className="btn btn-primary" />
+            <input
+              type="submit"
+              value="Create Job"
+              className="btn btn-primary"
+            />
           </div>
         </form>
       </div>
