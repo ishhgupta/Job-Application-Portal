@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import ls from "local-storage";
+import Button from '@material-ui/core/Button';
 
 class viewJobs extends Component {
 	constructor() {
@@ -10,9 +11,10 @@ class viewJobs extends Component {
         };
 		this.onDelete = this.onDelete.bind(this);
 		this.onClickEdit = this.onClickEdit.bind(this);
+		this.onClickApplications = this.onClickApplications.bind(this);
     }
     
-	// const response;
+	// const response;	
 	componentDidMount() {
 		const data = { mail: ls.get("email") };
 		axios
@@ -58,6 +60,19 @@ class viewJobs extends Component {
 		
 	};
 
+	onClickApplications = arg => e => {
+		e.preventDefault();
+		// console.log("abc");
+		const orderdata = {
+			title: document.getElementById(arg - 6).innerHTML,
+		};
+		console.log(orderdata);
+		ls.set("title",orderdata.title);
+		window.location = ("/viewJobs/applications");
+		
+	};
+
+	
 
 	createTable() {
 		let table = [];
@@ -121,7 +136,22 @@ class viewJobs extends Component {
 						</button>
 					</form>
 				</td>
-            );
+			);
+			
+			
+			children.push(
+				<td id={i} key={i++}>
+					<form onClick={this.onClickApplications(i - 1)}>
+					<Button variant="contained" color = "secondary">Applications</Button>
+						{/* <button
+							className="btn btn-outline-success my-2 my-sm-0"
+							type="submit"
+						>
+							Edit
+						</button> */}
+					</form>
+				</td>
+			);
             
 			table.push(<tr key={i++}>{children}</tr>);
 			i++;

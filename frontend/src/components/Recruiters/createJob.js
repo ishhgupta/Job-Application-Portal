@@ -73,21 +73,7 @@ class createJob extends Component {
         alert(res.response.data[Object.keys(res.response.data)[0]]);
       });
 
-    // this.setState({
-    //   title : "",
-    //   recruiterName : "",
-    //   recruiterEmail : "",
-    //   maxApplications : "",
-    //   maxPositions : "",
-    //   requiredSkills : "",
-    //   jobType : "",
-    //   duration : "",
-    //   salary : "",
-    //   selectedOption: "",
-    //   datePosting : null,
-    //   remPos : "",
-    //   errors: {}
-    // });
+    
   }
 
   render() {

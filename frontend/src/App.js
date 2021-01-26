@@ -14,6 +14,10 @@ import createJob from './components/Recruiters/createJob';
 import viewJobs from './components/Recruiters/viewJobs';
 import editJob from './components/Recruiters/editJob';
 import viewAllJobs from './components/Applicants/viewAllJobs';
+import myApplications from './components/Applicants/myApplications';
+import jobApplications from './components/Recruiters/jobApplications';
+import applicantProfile from './components/Recruiters/profile';
+import recruiterProfile from './components/Recruiters/profile';
 
 
 function App() {
@@ -33,7 +37,12 @@ function App() {
         <Route exact path = "/createJob" component={createJob}/>
         <Route exact path = "/viewJobs" component={viewJobs}/>
         <Route exact path = "/viewJobs/editJob" component={editJob}/>
+        <Route exact path = "/viewJobs/applications" component={jobApplications}/>
         <Route exact path = "/viewAllJobs" component={viewAllJobs}/>
+        <Route exact path = "/myApplications" component={myApplications}/>
+        <Route exact path = "/applicantProfile" component={applicantProfile}/>
+        <Route exact path = "/recruiterProfile" component={recruiterProfile}/>
+        
         <Route path="/users" exact component={UsersList}/>
         <Route path="/register" component={Register}/>
         <Route path= "/login" component = {Login}/>

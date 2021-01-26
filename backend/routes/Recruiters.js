@@ -4,9 +4,11 @@ const router = express.Router();
 
 // Load applicant model
 const job = require("../models/jobs");
+const recruiter = require("../models/recruiters");
 
 //Load Input validation
 const validateJobInput = require("../validation/jobs");
+const validateUpdateInput = require("../validation/updateProfile");
 // const validateLoginInput = require("../validation/login");
 
 // @route POST /recruiters/createJob
@@ -104,6 +106,46 @@ router.post("/updateJob", async function (req,res){
   res.json({message:"Successfully Updated"});
   // res.json(arr);  
 });
+
+router.post("/viewRecruiterProfile", function (req,res){
+  var email = req.body.mail;
+  // console.log(email);
+  // console.log(title);
+    recruiter.findOne({
+        "email" : email,
+    },async function(err,user){
+        if(err){
+            console.log(err);
+        }
+        // await console.log(user);
+        await res.json(user);
+    });
+});
+
+router.post("/updateRecruiterProfile", async function (req,res){
+  
+  const { errors, isValid } = validateUpdateInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    return res.status(400).json( errors );
+  }
+  else{
+  var email = req.body.mail;
+  var contactNumber = req.body.contactNumber;
+  var bio = req.body.bio
+  const arr = await recruiter.findOneAndUpdate({
+    "email" : email
+  },{
+    "contactNumber" : contactNumber,
+    "bio" : bio,
+  },{ new: true});
+  res.json({message:"Successfully Updated"});
+  // res.json(arr);
+}  
+});
+
+
 
 
 module.exports = router;

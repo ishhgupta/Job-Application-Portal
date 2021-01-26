@@ -48,6 +48,9 @@ cd frontend
 npm install/
 npm start
 ```
+<!-- * Features Implemeted
+1. implemented login and registration
+2.   -->
 
 Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser.
 

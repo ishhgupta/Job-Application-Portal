@@ -42,7 +42,10 @@ router.post("/apply",function(req,res){
           recruiterEmail : req.body.recruiterEmail,
           applicantEmail : req.body.applicantEmail,
           jobId : req.body.jobId,
-          sop : req.body.sop
+          sop : req.body.sop,
+          recruiterName : req.body.recruiterName,
+          jobTitle : req.body.jobTitle,
+          jobSalary : req.body.jobSalary
         });
     
         newApplication.save()
@@ -91,5 +94,19 @@ router.post("/query", function (req,res){
         await console.log(user);
         await res.json(user);
     });
+});
+
+router.post("/myApplications", function (req,res){
+  application.find( {
+      "applicantEmail" : req.body.applicantEmail,
+  },async function(err,user){
+      if(err){
+          console.log(err);
+          res.json(err);
+      }
+      // console.log("heyya");
+      await console.log(user);
+      await res.json(user);
+  });
 });
 module.exports = router;

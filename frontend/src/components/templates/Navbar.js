@@ -43,12 +43,27 @@ export default class NavBar extends Component {
                                     <Link to="/viewAllJobs" className="nav-link">Dashboard</Link>
                                 </li>
                             ) : null}
-                            <li className="navbar-item">
+                            {ls.get("userType") === "applicant" ? (
+                                <li className="navbar-item">
+                                    <Link to="/myApplications" className="nav-link">My Applications</Link>
+                                </li>
+                            ) : null}
+                            {ls.get("userType") === "applicant" ? (
+                                <li className="navbar-item">
+                                    <Link to="/applicantProfile" className="nav-link">My Profile</Link>
+                                </li>
+                            ) : 
+                            (
+                                <li className="navbar-item">
+                                    <Link to="/recruiterProfile" className="nav-link">My Profile</Link>
+                                </li> 
+                            )}
+                            {/* <li className="navbar-item">
                                 <Link to="/users" className="nav-link">Users</Link>
-                            </li>                      
-                            <li className="navbar-item">
+                            </li>                       */}
+                            {/* <li className="navbar-item">
                                 <Link to="/profile" className="nav-link">My Profile</Link>
-                            </li>
+                            </li> */}
                             <li className="navbar-item">
                                 <Link to="#" className="nav-link" onClick = {this.handleLogout}>Logout</Link>
                             </li>

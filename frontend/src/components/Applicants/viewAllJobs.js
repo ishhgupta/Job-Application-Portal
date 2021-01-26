@@ -159,7 +159,7 @@ class viewAllJobs extends Component{
         this.setState({ searchText: event.target.value.substr(0,20)});
     }
 
-    onClickApply = (id,email,title) => e =>{
+    onClickApply = (id,email,title,salary,recruiterName) => e =>{
         
         this.state.sop = prompt("Enter your SOP(max - 250 words)");
 
@@ -167,7 +167,11 @@ class viewAllJobs extends Component{
             recruiterEmail : email,
             applicantEmail : ls.get("email"),
             jobId : id,
-            sop : this.state.sop
+            sop : this.state.sop,
+            jobTitle : title,
+            jobSalary : salary,
+            recruiterName : recruiterName
+
         };
 
         axios.post('http://localhost:4000/applicants/apply',newApplication)
@@ -187,14 +191,23 @@ class viewAllJobs extends Component{
             (job) => {
                 return job.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1;
             }
-
         );
 
-        // this.state.filteredJobs = this.state.filteredJobs.filter(
-        //     (job) => {
-        //         return job.jobType.indexOf('Part-time') !== -1;
-        //     }
+        // filteredJobs = filteredJobs.filter(
+        //     (job) => 
         // )
+
+        filteredJobs = filteredJobs.filter(
+            (job) => {
+                return job.jobType.indexOf('Part-time') !== -1;
+            }
+        )
+        filteredJobs = filteredJobs.filter(
+            (job) => {
+                return (job.duration < 5 );
+            }
+        )
+
         return (
             <div>
                 <Grid container>
@@ -252,6 +265,7 @@ class viewAllJobs extends Component{
                                             <TableCell><Button onClick={this.sortSalary}>{this.renderIconSalary()}</Button><h6>Salary</h6></TableCell>
                                             <TableCell><Button onClick={this.sortDuration}>{this.renderIconDuration()}</Button><h6>Duration</h6></TableCell>
                                             <TableCell><h6>Deadline</h6></TableCell>
+                                            <TableCell><h6>JobType</h6></TableCell>
                                             <TableCell><h6>Status</h6></TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -266,6 +280,7 @@ class viewAllJobs extends Component{
                                             <TableCell>{job.salary}</TableCell>
                                             <TableCell>{job.duration}</TableCell>
                                             <TableCell>{job.deadline}</TableCell> 
+                                            <TableCell>{job.jobType}</TableCell> 
                                             <TableCell>
                                                 {/* <Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} 
                                                     variant="contained" 
@@ -274,7 +289,7 @@ class viewAllJobs extends Component{
                                              {
                                                  job.applicantStatus === "Full" ? (<Button className="btn btn-primary">Full</Button>) 
                                                 : ( job.applicantStatus === "Apply" ? 
-                                                (<Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} 
+                                                (<Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title, job.salary,job.recruiterName)} 
                                                     variant="contained" 
                                                     color = "primary">Apply</Button>) 
                                                     : (<Button variant="contained" color = "secondary">Applied</Button>))  

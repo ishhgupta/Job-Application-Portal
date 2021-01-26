@@ -25,6 +25,7 @@ const recruiterSchema = new Schema({
 	},
 	contactNumber :{
 		type: Number,
+		// default : ""
 	},
 	bio:{
 		type: String
