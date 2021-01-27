@@ -245,16 +245,20 @@ class viewAllJobs extends Component {
       );
     });
 
+    let tempArr = filteredJobs;
+
 //    //filter based on jobType
-    if(this.state.filterJobType === "") filteredJobs = this.state.jobs;
+    if(this.state.filterJobType === "") filteredJobs = tempArr;
     else{
     filteredJobs = filteredJobs.filter((job) => {
       return job.jobType.indexOf(this.state.filterJobType.value) !== -1;
     });
 }
 
+let tempArr2 = filteredJobs;
+
 //filtering on job Duration
-if(this.state.filterDuration === "") filteredJobs = this.state.jobs;
+if(this.state.filterDuration === "") filteredJobs = tempArr2;
 else{
     filteredJobs = filteredJobs.filter((job) => {
       return job.duration < this.state.filterDuration.value;
