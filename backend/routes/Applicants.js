@@ -109,4 +109,42 @@ router.post("/myApplications", function (req,res){
       await res.json(user);
   });
 });
+
+router.post("/viewApplicantProfile", function (req,res){
+  var email = req.body.mail;
+  // console.log(email);
+  // console.log(title);
+    applicant.findOne({
+        "email" : email,
+    },async function(err,user){
+        if(err){
+            console.log(err);
+        }
+        // await console.log(user);
+        await res.json(user);
+    });
+});
+
+router.post("/updateApplicantProfile", async function (req,res){
+  
+  const { errors, isValid } = validateUpdateInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    return res.status(400).json( errors );
+  }
+  else{
+  var email = req.body.mail;
+  var skills = req.body.skills;
+  // var bio = req.body.bio
+  const arr = await applicant.findOneAndUpdate({
+    "email" : email
+  },{
+    "skills" : skills,
+    // "bio" : bio,
+  },{ new: true});
+  res.json({message:"Successfully Updated"});
+  // res.json(arr);
+}  
+});
 module.exports = router;

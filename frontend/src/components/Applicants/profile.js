@@ -3,13 +3,15 @@ import axios from "axios";
 import ls from "local-storage";
 import { TextField } from "@material-ui/core";
 
-class applicantProfile extends Component {
+class recruiterProfile extends Component {
   constructor() {
     super();
     this.state = {
-      maxApplications: "",
-      maxPositions: "",
-      deadline: ""
+      name : "",
+      email : "",
+      skills : "",
+      errors : ""
+      
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -18,14 +20,15 @@ class applicantProfile extends Component {
 
   // const response;
   componentDidMount() {
-    const orderdata = { title: ls.get("title"), mail: ls.get("email") };
+    const orderdata = { mail: ls.get("email") };
     // console.log(orderdata);
     axios
-      .post("http://localhost:4000/recruiters/viewOneJob", orderdata)
+      .post("http://localhost:4000/applicants/viewApplicantProfile", orderdata)
       .then((res) => {
-        this.setState({ maxApplications: res.data.maxApplications });
-        this.setState({ maxPositions: res.data.maxPositions });
-        this.setState({ deadline: res.data.deadline})
+        this.setState({ name: res.data.name });
+        this.setState({ email: res.data.email});
+        this.setState({ skills: res.data.skills});
+       
         // console.log(res.data);
         // console.log(this.state.deadline);
       })
@@ -41,74 +44,70 @@ class applicantProfile extends Component {
   onSubmit(event) {
     event.preventDefault();
     const orderdata = {
-      title: ls.get("title"),
+      
       mail: ls.get("email"),
-      maxApplications: this.state.maxApplications,
-      maxPositions: this.state.maxPositions,
-      deadline : this.state.deadline
+      skills: this.state.skills,
+      
     };
     // console.log(orderdata);
     axios
-      .post("http://localhost:4000/recruiters/updateJob", orderdata)
+      .post("http://localhost:4000/applicants/updateApplicantProfile", orderdata)
       .then((res) => {
         console.log(res);
         alert("Information Updated Successfully");
         window.location.reload();
       })
-      .catch(function (err) {
-        alert(err);
-        // alert(res.response.data[Object.keys(res.response.data)[0]]);
+      .catch(function (res) {
+        // alrt(err);
+        alert(res.response.data[Object.keys(res.response.data)[0]]);
       });
     // ls.set("title", "");
   }
 
   render() {
-    // const { errors } = this.state;
+    const { errors } = this.state;
     return (
       <div className="container">
         <form noValidate onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label>Maximum Number of Applications Allowed: </label>
+            <label>Name: </label>
             <input
               type="text"
               className="form-control"
-              value={this.state.maxApplications}
-              onChange={this.handleChange}
-              id="maxApplications"
-              //   error = {errors.maxApplications}
+              value={this.state.name}
+            //   onChange={this.handleChange}
+            //   id="maxApplications"
+                // error = {errors.maxApplications}
             />
           </div>
 
           <div className="form-group">
-            <label>Maximum Available Positions: </label>
+            <label>Email ID</label>
             <input
               type="text"
               className="form-control"
-              value={this.state.maxPositions}
-              onChange={this.handleChange}
+              value={this.state.email}
+            //   onChange={this.handleChange}
               //   error = {errors.maxPositions}
-              id="maxPositions"
+            //   id="maxPositions"
             />
           </div>
 
-          <div>
-          <label>Deadline</label>
-          <br></br>
-          <input
-              type="datetime"
+          <div className="form-group">
+            <label>Skills: </label>
+            <input
+              type="text"
               className="form-control"
-              value={this.state.deadline}
-              // onChange={this.handleChange}
-              //   error = {errors.maxPositions}
-              // id="maxPositions"
-            />
-            <TextField
-              type="datetime-local"
-              id="deadline"
-              value={this.state.deadline}
+              value={this.state.skills}
               onChange={this.handleChange}
+                error = {errors.skills}
+              id="skills"
             />
           </div>
+
+          
+
+          
           <br></br>
 
           <div className="form-group">
@@ -120,4 +119,4 @@ class applicantProfile extends Component {
   }
 }
 
-export default applicantProfile;
+export default recruiterProfile;

@@ -120,7 +120,7 @@ class Register extends Component {
           <div className="form-group">
             <label>Confirm password: </label>
             <input
-              type="text"
+              type="password"
               className="form-control"
               value={this.state.password2}
               onChange={this.onChangePassword2}

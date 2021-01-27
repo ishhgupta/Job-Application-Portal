@@ -16,7 +16,7 @@ import editJob from './components/Recruiters/editJob';
 import viewAllJobs from './components/Applicants/viewAllJobs';
 import myApplications from './components/Applicants/myApplications';
 import jobApplications from './components/Recruiters/jobApplications';
-import applicantProfile from './components/Recruiters/profile';
+import applicantProfile from './components/Applicants/profile';
 import recruiterProfile from './components/Recruiters/profile';
 
 
