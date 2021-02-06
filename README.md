@@ -1,4 +1,4 @@
-# MERN Stack Boilerplate
+# Job Application Portal using MERN Stack
 
 ## Installations
 
