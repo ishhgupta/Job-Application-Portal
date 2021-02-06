@@ -1,3 +1,4 @@
+// const { application } = require("express");
 const express = require("express");
 const router = express.Router();
 // const ls = require("local-storage");
@@ -5,6 +6,7 @@ const router = express.Router();
 // Load applicant model
 const job = require("../models/jobs");
 const recruiter = require("../models/recruiters");
+const application = require("../models/applications");
 
 //Load Input validation
 const validateJobInput = require("../validation/jobs");
@@ -63,6 +65,9 @@ router.post("/delete",async function(req,res){
   var email = req.body.mail;
   // console.log(title);
   // console.log(email);
+  const arr = await application.deleteMany({
+    "jobTitle" : title
+  })
   const ans = await job.findOneAndDelete({
       "recruiterEmail" : email,
       "title" : title

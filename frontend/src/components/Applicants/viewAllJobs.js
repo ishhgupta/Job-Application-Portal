@@ -22,17 +22,17 @@ import React, { Component } from "react";
 import axios from "axios";
 import ls from "local-storage";
 
+//used for styling filter options
 const colourStyles = {
-    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-      // const color = chroma(data.color);
-      console.log({ data, isDisabled, isFocused, isSelected });
-      return {
-        ...styles,
-        backgroundColor: isFocused ? "#999999" : null,
-        color: "#333333"
-      };
-    }
-  };
+  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+    console.log({ data, isDisabled, isFocused, isSelected });
+    return {
+      ...styles,
+      backgroundColor: isFocused ? "#999999" : null,
+      color: "#333333",
+    };
+  },
+};
 
 class viewAllJobs extends Component {
   constructor(props) {
@@ -49,21 +49,21 @@ class viewAllJobs extends Component {
       filterDuration: "",
     };
     this.jobType = [
-        { label: "Full-time", value: "Full-time" },
-        { label: "Part-time", value: "Part-time" },
-        { label: "Work from Home", value: "Work from Home" },
-        {label : "Reset", value: ""}
-      ];
+      { label: "Full-time", value: "Full-time" },
+      { label: "Part-time", value: "Part-time" },
+      { label: "Work from Home", value: "Work from Home" },
+      { label: "Reset", value: "" },
+    ];
     this.durationDropdown = [
-        { label : "1", value : 1},
-        { label : "2", value : 2},
-        { label : "3", value : 3},
-        { label : "4", value : 4},
-        { label : "5", value : 5},
-        { label : "6", value : 6},
-        { label : "7", value : 7},
-        { label : "reset", value : 100},
-    ]
+      { label: "1", value: 1 },
+      { label: "2", value: 2 },
+      { label: "3", value: 3 },
+      { label: "4", value: 4 },
+      { label: "5", value: 5 },
+      { label: "6", value: 6 },
+      { label: "7", value: 7 },
+      { label: "reset", value: 100 },
+    ];
     this.sortSalary = this.sortSalary.bind(this);
     this.renderIconSalary = this.renderIconSalary.bind(this);
     this.sortDuration = this.sortDuration.bind(this);
@@ -80,13 +80,10 @@ class viewAllJobs extends Component {
     await axios
       .get("http://localhost:4000/applicants/viewAllJobs")
       .then((response) => {
-        //  console.log(response);
         this.setState({ jobs: response.data });
-        //  console.log(this.state.jobs);
       })
       .catch(function (error) {
         console.log(error);
-        //  console.log("errorrrr");
       });
 
     var status = [];
@@ -112,7 +109,7 @@ class viewAllJobs extends Component {
           console.log(err);
         });
     }
-    // await console.log(status);
+    
     var temp = [];
     temp = this.state.jobs;
     for (var i = 0; i < (await this.state.jobs.length); i++) {
@@ -122,11 +119,7 @@ class viewAllJobs extends Component {
 
     this.setState({ jobs: temp });
   }
-  // componentWillReceiveProps(nextProps) {
-  //     this.setState({
-  //       filtered: nextProps.jobs
-  //     });
-  //   }
+ 
   handleChange(filterJobType) {
     this.setState({ filterJobType });
     console.log(`Option selected:`, filterJobType);
@@ -233,7 +226,6 @@ class viewAllJobs extends Component {
       });
   };
 
- 
   render() {
     const { filterJobType } = this.state;
     const { filterDuration } = this.state;
@@ -247,32 +239,29 @@ class viewAllJobs extends Component {
 
     let tempArr = filteredJobs;
 
-//    //filter based on jobType
-    if(this.state.filterJobType === "") filteredJobs = tempArr;
-    else{
-    filteredJobs = filteredJobs.filter((job) => {
-      return job.jobType.indexOf(this.state.filterJobType.value) !== -1;
-    });
-}
+    //filter based on jobType
+    if (this.state.filterJobType === "") filteredJobs = tempArr;
+    else {
+      filteredJobs = filteredJobs.filter((job) => {
+        return job.jobType.indexOf(this.state.filterJobType.value) !== -1;
+      });
+    }
+    let tempArr2 = filteredJobs;
 
-let tempArr2 = filteredJobs;
-
-//filtering on job Duration
-if(this.state.filterDuration === "") filteredJobs = tempArr2;
-else{
-    filteredJobs = filteredJobs.filter((job) => {
-      return job.duration < this.state.filterDuration.value;
-    });
-}
+    //filtering on job Duration
+    if (this.state.filterDuration === "") filteredJobs = tempArr2;
+    else {
+      filteredJobs = filteredJobs.filter((job) => {
+        return job.duration < this.state.filterDuration.value;
+      });
+    }
 
     return (
       <div>
         <Grid container>
           <Grid item xs={12} md={3} lg={3}>
             <List component="nav" aria-label="mailbox folders">
-              <ListItem text>
-                <h3>Filters</h3>
-              </ListItem>
+              <ListItem text><h3>Filters</h3></ListItem>
               <ListItem button>
                 <form noValidate autoComplete="off">
                   <label>
@@ -286,44 +275,43 @@ else{
                   <TextField
                     id="standard-basic"
                     label="Enter Max"
-                    fullWidth={true} 
+                    fullWidth={true}
                   />
                 </form>
               </ListItem>
               <Divider />
-              {/* <ListItem button divider> */}
-              {/* <div className="form-group"> */}
               
               <label>
-                    <h5>Filter Based on JobType</h5>
-                  </label>
-              <Select 
-            //   defaultValue={this.jobType[3]}
-              defaultValue={{ label: "Filter based on JobType", value: "" }}
-            //   placeholder="Filter based on JobType"
-              id="jobType"
-              // className="form-control"
-              value={filterJobType}
-              onChange={this.handleChange}
-              options={this.jobType}
-              styles={colourStyles}
-            />
-             <Divider />
-             <label>
-                    <h5>Filter Based on Duration</h5>
-                  </label>
+                <h5>Filter Based on JobType</h5>
+              </label>
               <Select
-            //   placeholder="Filter based on JobType"
-            defaultValue={this.durationDropdown[7]}
-              id="durationDropdown"
-              // className="form-control"
-              value={filterDuration}
-              onChange={this.handleChangeDuration}
-              options={this.durationDropdown}
-              styles={colourStyles}
-            />
-              {/* </div> */}
-               
+                  defaultValue={this.jobType[3]}
+                // defaultValue={{ label: "Filter based on JobType", value: "" }}
+                  placeholder="Filter based on Job Type"
+                id="jobType"
+                // className="form-control"
+                value={filterJobType}
+                onChange={this.handleChange}
+                options={this.jobType}
+                styles={colourStyles}
+              />
+        
+              <Divider />
+
+              <label>
+                <h5>Filter Based on Duration</h5>
+              </label>
+              <Select
+                  placeholder="Filter based on Job Duration"
+                defaultValue={this.durationDropdown[7]}
+                id="durationDropdown"
+                // className="form-control"
+                value={filterDuration}
+                onChange={this.handleChangeDuration}
+                options={this.durationDropdown}
+                styles={colourStyles}
+              />
+              
             </List>
           </Grid>
           <Grid item xs={12} md={9} lg={9}>
@@ -349,41 +337,22 @@ else{
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    {/* <TableCell> Sr No.</TableCell> */}
-                    {/* <TableCell> <Button onClick={this.sortChange}>{this.renderIcon()}</Button>Date</TableCell> */}
                     <TableCell>
                       <h6>Job Title</h6>
                     </TableCell>
+                    <TableCell><h6>Recruiter Name</h6></TableCell>
                     <TableCell>
-                      <h6>Recruiter Name</h6>
+                      <Button onClick={this.sortRating}>{this.renderIconRating()}</Button><h6>Rating</h6>
                     </TableCell>
                     <TableCell>
-                      <Button onClick={this.sortRating}>
-                        {this.renderIconRating()}
-                      </Button>
-                      <h6>Rating</h6>
+                      <Button onClick={this.sortSalary}>{this.renderIconSalary()}</Button><h6>Salary</h6>
                     </TableCell>
                     <TableCell>
-                      <Button onClick={this.sortSalary}>
-                        {this.renderIconSalary()}
-                      </Button>
-                      <h6>Salary</h6>
+                      <Button onClick={this.sortDuration}>{this.renderIconDuration()}</Button><h6>Duration</h6>
                     </TableCell>
-                    <TableCell>
-                      <Button onClick={this.sortDuration}>
-                        {this.renderIconDuration()}
-                      </Button>
-                      <h6>Duration</h6>
-                    </TableCell>
-                    <TableCell>
-                      <h6>Deadline</h6>
-                    </TableCell>
-                    <TableCell>
-                      <h6>JobType</h6>
-                    </TableCell>
-                    <TableCell>
-                      <h6>Status</h6>
-                    </TableCell>
+                    <TableCell><h6>Deadline</h6></TableCell>
+                    <TableCell><h6>JobType</h6></TableCell>
+                    <TableCell><h6>Status</h6></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -398,10 +367,7 @@ else{
                       <TableCell>{job.deadline}</TableCell>
                       <TableCell>{job.jobType}</TableCell>
                       <TableCell>
-                        {/* <Button onClick = {this.onClickApply(job._id, job.recruiterEmail,job.title)} 
-                                                    variant="contained" 
-                                                    color = "primary">Apply</Button>
-                                             */}
+                      
                         {job.applicantStatus === "Full" ? (
                           <Button className="btn btn-primary">Full</Button>
                         ) : job.applicantStatus === "Apply" ? (
@@ -414,15 +380,9 @@ else{
                               job.recruiterName
                             )}
                             variant="contained"
-                            color="primary"
-                          >
-                            Apply
-                          </Button>
-                        ) : (
-                          <Button variant="contained" color="secondary">
-                            Applied
-                          </Button>
-                        )}
+                            color="primary">Apply</Button>) 
+                          : (<Button variant="contained" color="secondary">Applied</Button>)
+                        }
                       </TableCell>
                     </TableRow>
                   ))}
